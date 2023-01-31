@@ -1,0 +1,66 @@
+--- Excercise 1
+\func \fixl 9 f1 (x y : Nat) => x
+\func f2 : Nat => 0
+\func \infixl 1 f3 (f : Nat -> Nat) (z : Nat) : Int => 0
+\func f4 : Nat => 0
+\func \infixl 9 f5 => f1
+\func f6 => f4
+
+\func test => f1 f2 f3 f4 f5 f6
+
+--- Excercise 2
+\data Bool | true | false
+
+\func ifAbstract (A : \Type) (b : Bool) (x y : A) : A \elim b
+  | true => x
+  | false => y
+
+--- Excercise 3
+\func \infixl 6 || (a b : Bool) : Bool => ifAbstract Bool a a b
+
+--- Excercise 4
+\func \infixl 6 + (x y : Nat) : Nat \elim y
+  | 0 => x
+  | suc y => suc (x + y)
+
+\func \infixl 7 * (x y : Nat) : Nat \elim y
+  | 0 => 0
+  | suc y => x * y + x
+
+\func \infixr 8 ^ (x y : Nat) : Nat \elim y
+  | 0 => 1
+  | suc y => x ^ y * x
+
+\func fac (x : Nat) : Nat \elim x
+  | 0 => 1
+  | suc x => fac x * suc x
+
+--- Excercise 5
+\func \infixl 6 - (x y : Nat) : Nat
+  | 0, _ => 0
+  | suc x, 0 => suc x
+  | suc x, suc y => x - y
+
+\func \infix 4 < (x y : Nat) : Bool
+  | 0, 0 => false
+  | 0, suc y => true
+  | suc x, 0 => false
+  | suc x, suc y => x < y
+
+\func if (x : Bool) (t e : Nat) : Nat \elim x
+  | true => t
+  | false => e
+
+\func div (x y : Nat) => div' x x y
+  \where
+    \func div' (s x y : Nat) : Nat \elim s
+      | 0 => 0
+      | suc s => if (x < y) 0 (suc (div' s (x - y) y))
+
+\func mod (x y : Nat) => x - div x y * y
+
+\func gcd (x y : Nat) => gcd' x x y
+    \where
+      \func gcd' (s x y : Nat) : Nat \elim s
+        | 0 => x + y
+        | suc s => gcd' s y (mod x y)
