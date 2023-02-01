@@ -1,0 +1,92 @@
+-- 1. Define priorities of the functions f1, f2, f3, f4, f5 and f6 so that the function 'test' typechecks.
+
+\func \fixl 9 f1 (x y : Nat) => x
+\func f2 : Nat => 0
+\func \infixl 1 f3 (f : Nat -> Nat) (z : Nat) : Int => 0
+\func f4 : Nat => 0
+\func \infixl 9 f5 => f1
+\func f6 => f4
+
+\func test => f1 f2 f3 f4 f5 f6
+
+-- 2. Define in Arend the function 'if', which takes a boolean value b and two elements of an arbitrary type A
+--    and return the first element when b equals to true and the second one otherwise.
+
+\data Bool | true | false
+
+\func if {A : \Type} (b : Bool) (x y : A) : A \elim b
+  | true => x
+  | false => y
+
+-- 3. Define || via 'if'.
+
+\func \infixr 2 || (x y : Bool) : Bool => if x x y
+
+-- 4. Define the power and the factorial functions for natural numbers.
+
+\func \infixl 6 + (x y : Nat) : Nat \elim y
+  | 0 => x
+  | suc y => suc (x + y)
+
+\func \infixl 7 * (x y : Nat) : Nat \elim y
+  | 0 => 0
+  | suc y => x * y + x
+
+\func \infixr 8 ^ (x y : Nat) : Nat \elim y
+  | 0 => 1
+  | suc y => x ^ y * x
+
+\func fac (x : Nat) : Nat \elim x
+  | 0 => 1
+  | suc x => fac x * suc x
+
+-- 5. Define mod and gcd.
+
+\func \infixl 6 - (x y : Nat) : Nat
+  | 0, _ => 0
+  | suc x, 0 => suc x
+  | suc x, suc y => x - y
+
+\func \infix 4 < (x y : Nat) : Bool
+  | 0, 0 => false
+  | 0, suc y => true
+  | suc x, 0 => false
+  | suc x, suc y => x < y
+
+\func div (x y : Nat) => div' x x y
+  \where
+    \func div' (s x y : Nat) : Nat \elim s
+      | 0 => 0
+      | suc s => if (x < y) 0 (suc (div' s (x - y) y))
+
+\func mod (x y : Nat) => x - div x y * y
+
+\func gcd (x y : Nat) => gcd' x x y
+  \where
+    \func gcd' (s x y : Nat) : Nat \elim s
+      | 0 => x + y
+      | suc s => if (y < 1) x (if (x < 1) y ( gcd' s y (mod x y) ) )
+
+-- 6. Define the map function.
+
+\data List (A : \Type) | nil | \infixr 5 :: A (List A)
+
+\func map {A B : \Type} (f : A -> B) (xs : List A) : List B \elim xs
+  | nil => nil
+  | x :: xs => f x :: map f xs
+
+-- 7. Define the transpose function.
+--    It takes a list of lists considered as a matrix and returns a list of lists which represents the transposed matrix.
+--    Example:
+--    transpose ((1 :: 2 :: 3 :: nil) :: (4 :: 5 :: 6 :: nil)) == ((1 :: 4 :: nil) :: (2 :: 5 :: nil) :: (3 :: 6 :: nil))
+\func listHead {A : \Type} (xss : List (List A)) : List A \elim xss
+  | xs :: xss => xs
+  | nil => nil
+
+\func listTail {A : \Type} (xss : List (List A)) : List (List A) \elim xss
+  | xs :: xss => xss
+  | nil => nil
+
+\func concatVertical {A : \Type} (xss yss : List (List A)) : List (List A) \elim yss
+  | nil => xss
+  | ys :: yss => ((listHead xss) :: ys) :: concatVertical (listTail xss) yss
