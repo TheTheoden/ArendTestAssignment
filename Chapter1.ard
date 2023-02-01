@@ -87,6 +87,24 @@
   | xs :: xss => xss
   | nil => nil
 
+\func \infixl 6 ++ {A : \Type} (xs ys : List A) : List A \elim xs
+  | nil => ys
+  | x :: xs => x :: (xs ++ ys)
+
 \func concatVertical {A : \Type} (xss yss : List (List A)) : List (List A) \elim yss
   | nil => xss
-  | ys :: yss => ((listHead xss) :: ys) :: concatVertical (listTail xss) yss
+  | ys :: yss => (listHead xss ++ ys) :: concatVertical (listTail xss) yss
+
+\func transpondColumn {A : \Type} (xss : List (List A)) : List A \elim xss
+  | nil => nil
+  | xs :: xss => xs ++ transpondColumn xss
+
+\func transpondRow {A : \Type} (xss : List (List A)) : List (List A) \elim xss
+  | nil => nil
+  | (x :: xs) :: xss => (x :: nil) :: transpondRow xss
+  | nil :: xss => nil
+
+\func transpond {A : \Type} (xss : List (List A)) : List (List A) \elim xss
+  | nil => nil
+  | (x :: nil) :: xs => transpondColumn ((x :: nil) :: xs) :: nil
+  | xs :: xss => concatVertical (transpondRow (xs :: nil)) (transpond xss)
