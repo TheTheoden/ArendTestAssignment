@@ -1,2 +1,2 @@
 # ArendTestAssignment
-This is it
+My solution of [excercises for Arend](https://arend-lang.github.io/documentation/)
