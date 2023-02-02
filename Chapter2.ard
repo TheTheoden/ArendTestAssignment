@@ -25,7 +25,7 @@
 
 -- 6. Formulate and prove t6 : (P || Q -> P && Q) -> (P -> Q) && (Q -> P)
 
-\func t6 {P Q :\Type} (f : P || Q -> P && Q) : (P -> Q) && (Q -> P) => {?}
+\func t6 {P Q :\Type} (f : P || Q -> P && Q) : (P -> Q) && (Q -> P) => (\lam x => (f (||-intro1 x)).2 , \lam x => (f (||-intro2 x)).1)
 
 -- 7. Russell's paradox shows that there is no set of all sets. If such a set exists, then we can form the set `B` of sets which are not members of themselves.
 --    Then `B` belongs to itself if and only if it is not.
@@ -34,11 +34,11 @@
 --    Its proof also constructs a proposition which is true if and only if it is false.
 --    Prove that more generally the existence of any such proposition implies a contradiction.
 
-\func t7 {P : \Type} (f : P -> Not P) (g : Not P -> P) : Empty => {?}
+\func t7 {P : \Type} (f : P -> Not P) (g : Not P -> P) : Empty => f (g \lam p => f p p) (g \lam p => f p p)
 
 -- 8. Prove that if, for every x : Nat, P x is true, then there exists x : Nat such that P x is true.
 
-\func t8 (P : Nat -> \Type) (h : \Pi (x : Nat) -> P x) : \Sigma (x : Nat) (P x) => {?}
+\func t8 (P : Nat -> \Type) (h : \Pi (x : Nat) -> P x) : \Sigma (x : Nat) (P x) => (0, h 0)
 
 -- 9. Prove that if there is no x : Nat such that P x holds, then P 3 is false.
 
