@@ -47,6 +47,8 @@
 -- 10. Formulate and prove the following proposition:
 --     t10 : If, for every x : Nat, P x implies Q x, then the existence of an element x : Nat for which P x is true implies the existence of an element x : Nat for which Q x is true.
 
+\func t10 (P : Nat -> \Type) (Q : Nat -> \Type) (h : \Pi (x : Nat) -> P x -> Q x) : (\Sigma (x : Nat) (P x)) -> (\Sigma (x : Nat) (Q x)) => \lam f => (f.1, h f.1 f.2)
+
 -- 11. Formulate and prove the following proposition:
 --     t11 : If, for every x : Nat, either P x is false or Q x is false, then P 3 implies that Q 3 is false.
 
