@@ -42,7 +42,7 @@
 
 -- 9. Prove that if there is no x : Nat such that P x holds, then P 3 is false.
 
-\func t9 (P : Nat -> \Type) (h : Not (\Sigma (x : Nat) (P x))) : Not (P 3) => {?}
+\func t9 (P : Nat -> \Type) (h : Not (\Sigma (x : Nat) (P x))) : Not (P 3) => \lam f => h (3, f)
 
 -- 10. Formulate and prove the following proposition:
 --     t10 : If, for every x : Nat, P x implies Q x, then the existence of an element x : Nat for which P x is true implies the existence of an element x : Nat for which Q x is true.
