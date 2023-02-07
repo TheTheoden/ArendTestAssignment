@@ -104,7 +104,9 @@
   | (x :: xs) :: xss => (x :: nil) :: transpondRow xss
   | nil :: xss => nil
 
-\func transpond {A : \Type} (xss : List (List A)) : List (List A) \elim xss
-  | nil => nil
-  | (x :: nil) :: xs => transpondColumn ((x :: nil) :: xs) :: nil
-  | xs :: xss => concatVertical (transpondRow (xs :: nil)) (transpond xss)
+-- fix that!
+
+-- \func transpond {A : \Type} (xss : List (List A)) : List (List A) \elim xss
+--  | nil => nil
+--  | (x :: nil) :: xs => transpondColumn ((x :: nil) :: xs) :: nil
+--  | xs :: xss => concatVertical (transpondRow (xs :: nil)) (transpond xss)
