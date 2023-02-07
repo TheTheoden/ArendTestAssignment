@@ -36,6 +36,14 @@
 -- 4. Implement function 'zipWith' for 'vec' and 'Vec'.
 --    The function must take lists of equal lengths.
 
+\func zipWith-vec {A : \Type} {B : \Type} {C : \Type} (n : Nat) (xs : vec A n) (ys : vec B n) (f : A -> B -> C) : vec C n \elim n, xs, ys
+  | 0, _, _ => ()
+  | suc n, (x, xs), (y, ys) => (f x y, zipWith-vec n xs ys f)
+
+\func zipWith-Vec {A : \Type} {B : \Type} {C : \Type} (n : Nat) (xs : Vec A n) (ys : Vec B n) (f : A -> B -> C) : Vec C n \elim n, xs, ys
+  | 0, _, _ => fnil
+  | suc n, fcons x xs, fcons y ys => fcons (f x y) (zipWith-Vec n xs ys f)
+
 -- 5. Functions Fin n -> A correspond to lists of length n with elements in A.
 --    Implement the function that converts an element of Fin n -> A to element of Vec A n.
 
