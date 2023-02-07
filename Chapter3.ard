@@ -25,6 +25,14 @@
 
 -- 3. Implement function 'map' for 'vec' and 'Vec'.
 
+\func map-vec {A : \Type} {B : \Type} (n : Nat) (xs : vec A n) (f : A -> B) : vec B n \elim n, xs
+  | 0 , _ => ()
+  | suc n , (x, xs) => (f x, map-vec n xs f)
+
+\func map-Vec {A : \Type} {B : \Type} (n : Nat) (xs : Vec A n) (f : A -> B) : Vec B n \elim n, xs
+  | 0, _ => fnil
+  | suc n, fcons x xs => fcons (f x) (map-Vec n xs f)
+
 -- 4. Implement function 'zipWith' for 'vec' and 'Vec'.
 --    The function must take lists of equal lengths.
 
