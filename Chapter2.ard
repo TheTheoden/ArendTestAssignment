@@ -52,6 +52,10 @@
 -- 11. Formulate and prove the following proposition:
 --     t11 : If, for every x : Nat, either P x is false or Q x is false, then P 3 implies that Q 3 is false.
 
+\func t11 (P : Nat -> \Type) (Q : Nat -> \Type) (h : \Pi (x : Nat) -> Not (P x) || Not (Q x) ) : P 3 -> Not (Q 3) => \lam k => \case (h 3) \with {
+  | inl p => \lam x => p k
+  | inr q => q
+}
 -- 12. Prove associativity of `and` and `or`.
 
 \func \infixl 6 and (a b : Bool) : Bool \elim a, b
@@ -64,9 +68,23 @@
   | _, true => true
   | false, false => false
 
-\func and-assoc (x y z : Bool) : (x and y) and z = x and (y and z) => {?}
+\func and-assoc (x y z : Bool) : (x and y) and z = x and (y and z)
+  | false, _, _ => idp
+  | true, false, _ => idp
+  | true, true, true => idp
+  | true, true, false => idp
 
-\func or-assoc (x y z : Bool) : (x or y) or z = x or (y or z) => {?}
+\func or-assoc (x y z : Bool) : (x or y) or z = x or (y or z)
+  | true , true , true => idp
+  | false, false, false => idp
+  | true, false, false => idp
+  | true, false, true => idp
+  | true, true, false => idp
+  | false, true, false => idp
+  | false, false, true => idp
+  | false, true, true => idp
+
+-- Unelegant at all
 
 -- 13. Prove that 2 * 2 equals to 4.
 
