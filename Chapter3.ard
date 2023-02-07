@@ -17,7 +17,11 @@
 
 \func replicate-vec {A : \Type} (n : Nat) (a : A) : vec A n \elim n
   | 0 => ()
-  | suc n => (a,  (replicate-vec n a))
+  | suc n => (a,  replicate-vec n a)
+
+\func replicate-Vec {A : \Type} (n : Nat) (a : A) : Vec A n \elim n
+  | 0 => fnil
+  | suc n => fcons a (replicate-Vec n a)
 
 -- 3. Implement function 'map' for 'vec' and 'Vec'.
 
